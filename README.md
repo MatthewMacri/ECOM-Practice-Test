@@ -2,6 +2,7 @@
 
 # Guidelines
 
+## COMPLETED MUST TEST
 1- Redirect authenticated users from the login page to the employees secured page
 Hints:
 - Implement an isLoggedIn in function - where?? -> Membership Provider
