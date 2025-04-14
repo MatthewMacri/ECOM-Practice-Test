@@ -17,7 +17,7 @@ Hints:
 -- Clear the $_SESSION array
 -- call session_destroy
 
-## TO DO
+## COMPLETED
 3- Implement a check for the employee page for unauthenticated users to be redirected to the login
 
 ## TO DO
