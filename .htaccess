@@ -1,0 +1,16 @@
+# Disable MultiViews so that Apache doesn't try to match the URL path to a file name.
+Options -MultiViews
+
+RewriteEngine On
+
+RewriteBase /ECOM-Practice-Test
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+#RewriteRule ^/?([a-z]+)/(.*)$ index.php?resource=$1&id=$2 [QSA]
+
+# QSA is a flag for Apache to keep the query string that is part of the original URL  before the rewrite
+# the L flag tells Apache to stop at the current rule and not apply the next rewrite rules
+RewriteRule ^(.+) index.php?url=$1 [QSA,L]
+#RewriteRule ^() index.php?url=$1 [QSA,L]
