@@ -12,8 +12,7 @@ class MembershipProvider{
 
     public function __construct(){
 
-        $this->user = new User();
-
+        $user = new User('user@example.com', 'username', 'secretPassword');
     }
 
 
@@ -52,6 +51,16 @@ class MembershipProvider{
         }else
             return false;
 
+    }
+
+    public function checkIfUserIsLogged() {
+        // Logic to check if the user is logged in
+        return isset($_SESSION['user_id']); // Example logic
+    }
+
+    public function isLogged() {
+        // Implement the logic to check if the user is logged in
+        return isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true;
     }
 
 }

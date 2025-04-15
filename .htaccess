@@ -2,15 +2,10 @@
 Options -MultiViews
 
 RewriteEngine On
-
 RewriteBase /ECOM-Practice-Test
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 
-#RewriteRule ^/?([a-z]+)/(.*)$ index.php?resource=$1&id=$2 [QSA]
-
-# QSA is a flag for Apache to keep the query string that is part of the original URL  before the rewrite
-# the L flag tells Apache to stop at the current rule and not apply the next rewrite rules
+# QSA keeps the query string intact and L stops further rewriting
 RewriteRule ^(.+) index.php?url=$1 [QSA,L]
-#RewriteRule ^() index.php?url=$1 [QSA,L]

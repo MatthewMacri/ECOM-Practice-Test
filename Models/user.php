@@ -6,21 +6,24 @@ use database\DBConnectionManager;
 
 require_once(dirname(__DIR__)."/core/db/dbconnectionmanager.php");
 
-class User{
+class User {
 
     private $id;
     private $username;
     private $password;
     private $enabled2FA;
     private $secret;
+    protected $email;
 
     private $dbConnection;
 
     // Constructor
-    public function __construct() {
-
+    public function __construct($email, $username, $password, $enabled2FA = false) {
         $this->dbConnection = (new DBConnectionManager())->getConnection();
-
+        $this->email    = $email;
+        $this->username = $username;
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
+        $this->enabled2FA = $enabled2FA;
     }
 
     // Getters and setters
@@ -81,5 +84,9 @@ class User{
         $stmt->bindParam(':username', $this->username);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_CLASS, User::class);
+    }
+
+    public function save() {
+        return true; 
     }
 }

@@ -1,91 +1,51 @@
 <?php
 
-class App{
-
-
-    public function start(){
-
+class App {
+    public function start() {
         spl_autoload_register(function ($class) {
-            require($class.'.php');
+            require($class . '.php');
         });
    
         $requestBuilderClass = "\\core\\http\\RequestBuilder";
 
-        if(class_exists($requestBuilderClass)){
-
-                $requestBuilder = new $requestBuilderClass();
-
-                $request = $requestBuilder->getRequest();
-
-            // Given the URL http://localhost/app/index.php?employees=1
-            // This means we want the employee with ID = 1
-            // We read the value 1 using $_GET["employees"]
-
-            // but what if we want all employees thus the URL doesn't have the id as a value:
-            // http://localhost/app/index.php?employees
-
-            // Our objective is to read the "employees" and match it with a controller within our app
-
-            //echo "URL = ".$_GET['url'];
-
+        if (class_exists($requestBuilderClass)) {
+            $requestBuilder = new $requestBuilderClass();
+            $request = $requestBuilder->getRequest();
             $urlParams = $request->getParams();
 
-            $resourceName = $urlParams[0];
-            //echo $resource;
+            // Check that there is at least one parameter
+            if (count($urlParams) > 0) {
+                $resourceName = $urlParams[0];
 
-            // We need to construct the controller name from the resource name
+                // Build the controller name, e.g. "employees" becomes "EmployeeController"
+                $controllerClass = substr(ucfirst($resourceName), 0, strlen($resourceName)-1)."Controller";
+                $controllerClass = "\\controllers\\" . $controllerClass;
 
-            // what do we need to do?
-            // to match our controller name "EmployeeController"
-            // starting with "employees" as included in the query string
-            // 1- We need to Capitalize the first letter "E"
-            // 2- We need to remove the "s"
-            // 3- We need to append the keyword "Controller"
+                if (class_exists($controllerClass)) {
+                    $controller = new $controllerClass();
+                    $requestMethod = $request->getMethod();
 
-            $controllerClass = substr(ucfirst($resourceName), 0, strlen($resourceName)-1)."Controller";
+                    // Determine the action based on the additional URL parameters
+                    if(count($urlParams) > 1) {
+                        $action = $urlParams[1]; // e.g., "registerview"
+                    } else {
+                        $action = 'read';
+                    }
 
-            // Add the namespace / which corresponds to the folder so that the require works
-            // using the fully qualified class name:
-            $controllerClass = "\\controllers\\".$controllerClass;
-
-            //echo $controllerClass;
-
-            // The class_exists check is calling the function given to spl_autoload_register() and passing the $controllerClass as parameter
-            if(class_exists($controllerClass)){
-
-                $controller = new $controllerClass();
-                
-                $requestMethod = $request->getMethod();
-
-                switch($requestMethod){
-                    case 'GET':   
+                    // If the controller has the action method, call it; otherwise, default to "read"
+                    if(method_exists($controller, $action)) {
+                        $controller->$action();
+                    } else {
                         $controller->read();
-                        break;
-                    case 'POST': 
-                        $data = $request->getpostFields();
-                        $controller->create($data);
-                        break;
-                    case 'PUT': ;
-                        break;
-                    case 'DELETE': ;
-                        break;
-                    default: ;
-                }                
-
-
-                // If we used return in the view then we can echo the data here
-                //echo $data;
-            }else{
-                echo "<br>";
-                echo "The requested resource is not found.";
+                    }
+                } else {
+                    echo "<br>The requested resource is not found.";
+                }
+            } else {
+                echo "No resource specified.";
             }
-
         }
-
     }
-}//End class App
-
+}
 $app = new App();
 $app->start();
-
-

@@ -3,7 +3,7 @@
 namespace controllers;
 
 use views\public\Login;
-use core\auth\membershipprovider.php;
+use core\auth\MembershipProvider;
 
 require(dirname(__DIR__)."/resources/views/public/login.php");
 require(dirname(__DIR__)."/core/auth/membershipprovider.php");
@@ -27,7 +27,7 @@ class LoginController{
     public function checkIfUserIsLogged(){
         $membershipprovider = new MembershipProvider();
         if($membershipprovider->isLogged() == true){
-            header("Location: employeelist.php")
+            header("Location: employeelist.php");
             exit;
         } else {
             echo "Error: user is not logged in";
