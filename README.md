@@ -20,7 +20,7 @@ Hints:
 ## COMPLETED
 3- Implement a check for the employee page for unauthenticated users to be redirected to the login
 
-## TO DO
+## COMPLETED
 4- Implement the register functionality
 - Implement a Model
 - Controller
