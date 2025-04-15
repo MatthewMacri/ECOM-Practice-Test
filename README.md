@@ -27,7 +27,7 @@ Hints:
 - View
 -- The view should have the fields email, username, password, and an enable 2FA checkbox
 
-## TO DO
+## COMPLETED
 5- Implement JavaScript client side user input validation for the email
 Using the 'validity' DOM API
 https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation
